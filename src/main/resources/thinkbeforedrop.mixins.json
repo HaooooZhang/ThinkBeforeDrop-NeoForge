@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.haoooozhang.thinkbeforedrop.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "thinkbeforedrop.refmap.json",
+  "client": [
+    "ClientPlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
