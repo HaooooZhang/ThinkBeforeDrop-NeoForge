@@ -2,7 +2,7 @@ package net.haoooozhang.thinkbeforedrop;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -17,15 +17,14 @@ public class DropManager {
     private static int lastSlot = -1;
     private static boolean dropped = false;
 
-    private static boolean shouldHandleDrop(ItemStack stack){
+    private static boolean shouldHandleDrop(ItemStack stack) {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         if (!config.configenable) return false;
         Item item = stack.getItem();
         Block block = null;
-        if (item instanceof BlockItem)
-            block = ((BlockItem) item).getBlock();
-        ResourceLocation location = Registries.ITEM.location();//有问题
-        assert location != null;
+        if (item instanceof BlockItem blockItem)
+            block = blockItem.getBlock();
+        ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);//有问题
         String name = location.toString();
         if (config.internal.weapon)
             if (item instanceof SwordItem || item instanceof BowItem || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ArrowItem)
@@ -45,13 +44,13 @@ public class DropManager {
             if (item instanceof DiscFragmentItem || item.components().has(DataComponents.JUKEBOX_PLAYABLE))
                 return true;
         if (config.internal.uncommon)
-            if (item.components().has(DataComponents.RARITY) == Rarity.UNCOMMON)
+            if (item.components().get(DataComponents.RARITY) == Rarity.UNCOMMON)
                 return true;
         if (config.internal.rare)
-            if (item.components().has(DataComponents.RARITY) == Rarity.RARE)
+            if (item.components().get(DataComponents.RARITY) == Rarity.RARE)
                 return true;
         if (config.internal.epic)
-            if (item.components().has(DataComponents.RARITY) == Rarity.EPIC)
+            if (item.components().get(DataComponents.RARITY) == Rarity.EPIC)
                 return true;
         if (config.internal.enchanted) {
             if (stack.isEnchanted())
@@ -67,6 +66,7 @@ public class DropManager {
                 return true;
         return config.custom.customItems.contains(name);
     }
+
     public static boolean shouldThrow(ItemStack stack, int slot) {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         if (slot != lastSlot) {
@@ -85,6 +85,7 @@ public class DropManager {
         lastSlot = slot;
         return false;
     }
+
     public static Component getWarningText() {
         return Component.translatable("tbt.warning");
     }
