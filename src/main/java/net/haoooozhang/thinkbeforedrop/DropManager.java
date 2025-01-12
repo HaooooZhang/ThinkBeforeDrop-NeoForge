@@ -27,7 +27,7 @@ public class DropManager {
         ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);//有问题
         String name = location.toString();
         if (config.internal.weapon)
-            if (item instanceof SwordItem || item instanceof BowItem || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ArrowItem)
+            if (item instanceof SwordItem || item instanceof BowItem || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ArrowItem || item instanceof MaceItem)
                 return true;
         if (config.internal.tool)
             if (item instanceof AxeItem || item instanceof PickaxeItem || item instanceof ShovelItem || item instanceof HoeItem)
