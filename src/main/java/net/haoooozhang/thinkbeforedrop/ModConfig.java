@@ -12,7 +12,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 @Config(name = ThinkBeforeDrop.MODID)
 public class ModConfig implements ConfigData {
-    public boolean configenable = true;
+    public boolean enabled = true;
     @ConfigEntry.Gui.CollapsibleObject
     public Time time = new Time();
     @ConfigEntry.Gui.CollapsibleObject

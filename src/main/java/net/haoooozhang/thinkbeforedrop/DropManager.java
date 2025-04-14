@@ -19,7 +19,7 @@ public class DropManager {
 
     private static boolean shouldHandleDrop(ItemStack stack) {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-        if (!config.configenable) return false;
+        if (!config.enabled) return false;
         Item item = stack.getItem();
         Block block = null;
         if (item instanceof BlockItem blockItem)
