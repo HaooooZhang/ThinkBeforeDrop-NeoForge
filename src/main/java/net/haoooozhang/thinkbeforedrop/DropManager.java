@@ -5,6 +5,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
@@ -19,25 +20,27 @@ public class DropManager {
 
     private static boolean shouldHandleDrop(ItemStack stack) {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-        if (!config.configenable) return false;
+        if (!config.enabled) return false;
         Item item = stack.getItem();
         Block block = null;
         if (item instanceof BlockItem blockItem)
             block = blockItem.getBlock();
         ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);//有问题
         String name = location.toString();
+        if (config.custom.excludeItems.contains(name))
+            return false;
         if (config.internal.weapon)
-            if (item instanceof SwordItem || item instanceof BowItem || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ArrowItem || item instanceof MaceItem)
+            if (stack.is(ItemTags.SWORD_ENCHANTABLE) || stack.is(ItemTags.BOW_ENCHANTABLE) || stack.is(ItemTags.CROSSBOW_ENCHANTABLE) || stack.is(ItemTags.TRIDENT_ENCHANTABLE) || stack.is(ItemTags.ARROWS) || stack.is(ItemTags.MACE_ENCHANTABLE))
                 return true;
         if (config.internal.tool)
-            if (item instanceof AxeItem || item instanceof PickaxeItem || item instanceof ShovelItem || item instanceof HoeItem)
+            if (stack.is(ItemTags.AXES) || stack.is(ItemTags.PICKAXES) || stack.is(ItemTags.SHOVELS) || stack.is(ItemTags.HOES))
                 return true;
         if (config.internal.shulkerBox)
             if (block != null)
                 if (block instanceof ShulkerBoxBlock)
                     return true;
         if (config.internal.armor)
-            if (item instanceof ArmorItem || item instanceof ElytraItem)
+            if (stack.is(ItemTags.ARMOR_ENCHANTABLE) || item instanceof ElytraItem)
                 return true;
         //ore todo
         if (config.internal.disc)

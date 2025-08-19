@@ -17,20 +17,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(LocalPlayer.class)
-public class ClientPlayerEntityMixin extends AbstractClientPlayer{
+public class ClientPlayerEntityMixin extends AbstractClientPlayer {
     @Shadow
     @Final
     protected Minecraft minecraft;
 
-    public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile){
+    public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Inject(method = "dropSelectedItem(Z)Z", at = @At("HEAD"), cancellable = true)
-    public void beforeDropItem(boolean dropEntireStack, CallbackInfoReturnable<Boolean> cir){
-        if (!DropManager.shouldThrow(this.getInventory().getSelected(), this.getInventory().selected)) {
-            assert minecraft.player != null;
-            minecraft.player.displayClientMessage(DropManager.getWarningText(), true);
+    @Inject(method = "drop(Z)Z", at = @At("HEAD"), cancellable = true)
+    public void beforeDropItem(boolean dropEntireStack, CallbackInfoReturnable<Boolean> cir) {
+        if (!DropManager.shouldThrow(this.getInventory().getItem(this.getInventory().selected), this.getInventory().selected)) {
+            assert this.minecraft.player != null;
+            this.minecraft.player.displayClientMessage(DropManager.getWarningText(), true);
             cir.setReturnValue(false);
         }
     }
