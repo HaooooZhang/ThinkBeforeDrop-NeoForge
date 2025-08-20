@@ -62,7 +62,7 @@ public class DropManager {
         //hasNBT Todo
         //hasComponent Todo
         if (config.internal.enchantedBook)
-            if (item instanceof EnchantedBookItem)
+            if (item.components().has(DataComponents.STORED_ENCHANTMENTS))
                 return true;
         if (config.internal.book)
             if (item instanceof WritableBookItem || item instanceof WrittenBookItem)
